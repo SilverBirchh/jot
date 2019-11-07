@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "136915368866",
+    "firebase_url": "https://soar-jot.firebaseio.com",
+    "project_id": "soar-jot",
+    "storage_bucket": "soar-jot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136915368866:android:da2b38974d46245023d0fb",
+        "android_client_info": {
+          "package_name": "com.soar.jot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136915368866-ivtpa5kp7d6q7gk9r2n5vsd0amjbhfa6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.soar.jot",
+            "certificate_hash": "eeab0f7f9f811054e3c3f7fa7a55899af7228291"
+          }
+        },
+        {
+          "client_id": "136915368866-oqdpjl7q8k2mu7gp6itoi8mu0vjsjgsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvIv3JJVnvWgLZ25kXNpn4DGhTvlBoXVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136915368866-oqdpjl7q8k2mu7gp6itoi8mu0vjsjgsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
