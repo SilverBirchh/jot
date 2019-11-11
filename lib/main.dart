@@ -1,15 +1,6 @@
-import 'package:Jot/api/authenticate.dart';
-import 'package:Jot/bloc/application/bloc.dart';
-import 'package:Jot/ui/screens/home.dart';
-import 'package:Jot/ui/screens/splash.dart';
-import 'package:Jot/ui/widgets/slide.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
+import 'package:Jot/ui/screens/feedback_page.dart';
 
-import 'ui/screens/landing.dart';
+import './main_exports.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +26,9 @@ void main() async {
         RepositoryProvider<AuthenticationBase>(
           builder: (BuildContext context) => Authentication(),
         ),
+        RepositoryProvider<ProfileApiBase>(
+          builder: (BuildContext context) => ProfileApi(),
+        ),
       ],
       child: Jot(),
     ),
@@ -53,6 +47,11 @@ class Jot extends StatelessWidget {
               CheckIsAuthenticated(),
             ),
         ),
+        BlocProvider<ProfileBloc>(
+          builder: (BuildContext context) => ProfileBloc(
+            RepositoryProvider.of<ProfileApiBase>(context),
+          ),
+        ),
       ],
       child: MaterialApp(
         title: 'Jot',
@@ -63,9 +62,17 @@ class Jot extends StatelessWidget {
         initialRoute: '/',
         onGenerateRoute: (settings) {
           if (settings.name == "/home") {
-            return SlideLeftRoute(page: Home());
-          } else if (settings.name == '/') {
-            return SlideUpRoute(page: Landing());
+            return SlideLeftRoute(
+              page: Home(),
+            );
+          } else if (settings.name == '/profile') {
+            return SlideLeftRoute(
+              page: Profile(),
+            );
+          } else if (settings.name == '/feedback') {
+            return SlideLeftRoute(
+              page: FeedbackPage(),
+            );
           }
           // unknown route
           return MaterialPageRoute(builder: (context) => Container());

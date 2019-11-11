@@ -12,3 +12,5 @@ class InitialiseUser extends ApplicationEvent {
 class CheckIsAuthenticated extends ApplicationEvent {
   CheckIsAuthenticated();
 }
+
+class UninitialiseUser extends ApplicationEvent {}

@@ -61,7 +61,7 @@ class Landing extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                    colors: <Color>[Color(0xffE4E5E6), Color(0xff00416A)],
+                    colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
                     begin: FractionalOffset.topCenter,
                     end: FractionalOffset.bottomCenter,
                     stops: <double>[0.0, 1.0],
@@ -76,8 +76,9 @@ class Landing extends StatelessWidget {
                     child: Text(
                       'Jot.',
                       style: TextStyle(
-                          color: Color(0xff2196F3),
+                          color: Colors.white,
                           fontSize: 70,
+                          fontWeight: FontWeight.bold,
                           decoration: null),
                     ),
                   ),
