@@ -1,3 +1,4 @@
+import 'package:Jot/ui/screens/create.dart';
 import 'package:Jot/ui/screens/feedback_page.dart';
 
 import './main_exports.dart';
@@ -72,6 +73,10 @@ class Jot extends StatelessWidget {
           } else if (settings.name == '/feedback') {
             return SlideLeftRoute(
               page: FeedbackPage(),
+            );
+          } else if (settings.name == '/create') {
+            return SlideLeftRoute(
+              page: Create(),
             );
           }
           // unknown route

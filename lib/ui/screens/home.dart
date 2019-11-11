@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          print('Jot');
+          Navigator.pushNamed(context, '/create');
         },
       ),
       appBar: AppBar(
@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.filter_list),
             onPressed: () {
-              print('Filter');
+              Navigator.pushNamed(context, '/create');
             },
           ),
           IconButton(

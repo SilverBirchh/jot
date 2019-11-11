@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -28,7 +28,8 @@ dependencies:
   firebase_auth: ^0.14.0+5
   cloud_firestore: 0.12.9+5
   zefyr: ^0.8.0
-  cached_network_image: ^1.1.1
+  cached_network_image: ^2.0.0-rc
+  intl_translation: ^0.17.7
 
 
 dev_dependencies:
