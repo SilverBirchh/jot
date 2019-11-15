@@ -1,3 +1,5 @@
+import 'package:Jot/ui/widgets/filter_modal.dart';
+import 'package:Jot/ui/widgets/jot_list.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -19,9 +21,7 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.filter_list),
-            onPressed: () {
-              Navigator.pushNamed(context, '/create');
-            },
+            onPressed: () => _showFilter(context),
           ),
           IconButton(
             icon: Icon(Icons.account_circle),
@@ -42,10 +42,17 @@ class Home extends StatelessWidget {
               stops: <double>[0.0, 1.0],
               tileMode: TileMode.clamp),
         ),
-        child: ListView(
-          children: <Widget>[],
-        ),
+        child: JotList()
       ),
+    );
+  }
+
+  _showFilter(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return FilterModal();
+      },
     );
   }
 }

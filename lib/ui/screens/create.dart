@@ -1,4 +1,7 @@
+import 'package:Jot/bloc/jot/bloc.dart';
+import 'package:Jot/data/jot/jot_model.dart';
 import 'package:Jot/data/time_period.dart';
+import 'package:Jot/main_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +15,19 @@ class _CreateState extends State<Create> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final TimePeriod timings = TimePeriod();
+  Jot jot;
+
+  @override
+  void initState() {
+    super.initState();
+    jot = Jot(
+        chosenPeriod: Period.TODAY,
+        endDate: Timestamp.now(),
+        startDate: Timestamp.now(),
+        isImportant: false,
+        ownerId: BlocProvider.of<ApplicationBloc>(context).state.user.uid,
+        text: '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +41,23 @@ class _CreateState extends State<Create> {
           IconButton(
             icon: Icon(Icons.save_alt),
             onPressed: () {
-              print('save');
+              if (_controller.text.isEmpty) {
+                final SnackBar snackBar = SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: const Text(
+                      'Please jot down an accomplishment before saving'),
+                );
+
+                _createKey.currentState.showSnackBar(snackBar);
+                _focusNode.requestFocus();
+                return;
+              }
+
+              jot.text = _controller.text;
+              BlocProvider.of<JotBloc>(context).add(
+                AddJot(jot),
+              );
+              Navigator.pop(context);
             },
           )
         ],
@@ -84,7 +116,7 @@ class _CreateState extends State<Create> {
                       Icons.arrow_drop_down,
                       color: Colors.white,
                     ),
-                    value: timings.currentPeriod,
+                    value: jot.chosenPeriod,
                     selectedItemBuilder: (BuildContext context) {
                       return timings.timePeriods.map((Period value) {
                         return DropdownMenuItem<Period>(
@@ -105,16 +137,12 @@ class _CreateState extends State<Create> {
                         ),
                       );
                     }).toList(),
-                    onChanged: (Period val) {
-                      setState(() {
-                        timings.currentPeriod = val;
-                      });
-                    },
+                    onChanged: (Period val) => calculateJotPeriod(val),
                   ),
                 ],
               ),
             ),
-            if (timings.currentPeriod == Period.DATE)
+            if (jot.chosenPeriod == Period.DATE)
               Column(
                 children: <Widget>[
                   Divider(
@@ -132,22 +160,23 @@ class _CreateState extends State<Create> {
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         GestureDetector(
-                            onTap: () {
-                              _focusNode.unfocus();
-                              _selectDate(context);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(color: Colors.white38),
-                                ),
+                          onTap: () {
+                            _focusNode.unfocus();
+                            _selectDate(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Colors.white38),
                               ),
-                              child: Text(
-                                _formatOtherTime(timings.otherDate),
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                            ))
+                            ),
+                            child: Text(
+                              _formatOtherTime(jot.startDate.toDate()),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -178,11 +207,11 @@ class _CreateState extends State<Create> {
                   ),
                   Checkbox(
                     checkColor: Colors.white,
-                     activeColor: Colors.blueAccent,
-                    value: timings.isImportant,
+                    activeColor: Colors.indigo,
+                    value: jot.isImportant,
                     onChanged: (bool val) {
                       setState(() {
-                        timings.isImportant = val;
+                        jot.isImportant = val;
                       });
                     },
                   )
@@ -228,6 +257,35 @@ class _CreateState extends State<Create> {
     super.dispose();
   }
 
+  void calculateJotPeriod(Period period) {
+    DateTime startDate = DateTime.now();
+    DateTime endDate = DateTime.now();
+
+    if (period == Period.YESTERDAY) {
+      startDate = DateTime.now().subtract(
+        Duration(days: 1),
+      );
+    } else if (period == Period.THIS_WEEK) {
+      startDate = DateTime.now().subtract(
+        Duration(days: 7),
+      );
+    } else if (period == Period.THIS_MONTH) {
+      startDate = DateTime.now().subtract(
+        Duration(days: 28),
+      );
+    } else if (period == Period.DATE) {
+      startDate = DateTime.now();
+    } else {
+      startDate = DateTime.now();
+    }
+
+    setState(() {
+      jot.chosenPeriod = period;
+      jot.startDate = Timestamp.fromDate(startDate);
+      jot.endDate = Timestamp.fromDate(endDate);
+    });
+  }
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -236,7 +294,8 @@ class _CreateState extends State<Create> {
         lastDate: DateTime(2101));
 
     setState(() {
-      timings.otherDate = picked;
+      jot.startDate = Timestamp.fromDate(picked);
+      jot.endDate = Timestamp.fromDate(picked);
     });
   }
 

@@ -3,17 +3,27 @@ enum Period { TODAY, YESTERDAY, THIS_WEEK, THIS_MONTH, DATE }
 class TimePeriod {
   List<Period> get timePeriods => Period.values;
 
-  Period currentPeriod = Period.TODAY;
-
-  DateTime otherDate = DateTime.now();
-
-  bool isImportant = false;
+  Period stringToType(String period) {
+    if (period == 'Today') {
+      return Period.TODAY;
+    } else if (period == 'Yesterday') {
+      return Period.YESTERDAY;
+    } else if (period == 'This Week') {
+      return Period.THIS_WEEK;
+    } else if (period == 'This Month') {
+      return Period.THIS_MONTH;
+    } else if (period == 'Specific Date') {
+      return Period.DATE;
+    } else {
+      return null;
+    }
+  }
 
   String typeToString(Period period) {
     if (period == Period.TODAY) {
       return 'Today';
     } else if (period == Period.YESTERDAY) {
-      return 'Yesyerday';
+      return 'Yesterday';
     } else if (period == Period.THIS_WEEK) {
       return 'This Week';
     } else if (period == Period.THIS_MONTH) {
