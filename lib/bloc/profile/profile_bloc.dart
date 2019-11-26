@@ -31,6 +31,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       } catch (err) {
         yield FeedbackError();
       }
+    } else if (event is UpdateUserProfile) {
+      profileApiBase.updateUserTags(event.user);
     }
   }
 }

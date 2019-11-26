@@ -19,9 +19,13 @@ class JotBloc extends Bloc<JotEvent, JotState> {
     JotEvent event,
   ) async* {
     if (event is AddJot) {
-      yield LoadingJots();
       yield* _addJotToState(event);
+    } else if (event is DeleteJot) {
+      yield* _deleteJotToState(event);
+    } else if (event is UpdateJot) {
+      yield* _updateJotToState(event);
     } else if (event is StreamJots) {
+      yield LoadingJots();
       yield* _mapLoadAllPanelsToState(event);
     } else if (event is JotListUpdated) {
       yield* _mapDashboardUpdateToState(event);
@@ -30,15 +34,15 @@ class JotBloc extends Bloc<JotEvent, JotState> {
 
   Stream<JotState> _mapLoadAllPanelsToState(StreamJots event) async* {
     try {
-    _streamSubscription?.cancel();
-    _streamSubscription = jotApi.jots(event.userId).listen(
-      (List<Jot> dashboard) {
-        add(
-          JotListUpdated(dashboard),
-        );
-      },
-    );
-    } catch(e) {
+      _streamSubscription?.cancel();
+      _streamSubscription = jotApi.jots(event.userId).listen(
+        (List<Jot> dashboard) {
+          add(
+            JotListUpdated(dashboard),
+          );
+        },
+      );
+    } catch (e) {
       yield ErrorJots();
     }
   }
@@ -49,5 +53,13 @@ class JotBloc extends Bloc<JotEvent, JotState> {
 
   Stream<JotState> _addJotToState(AddJot event) async* {
     jotApi.addJot(event.jot);
+  }
+
+  Stream<JotState> _deleteJotToState(DeleteJot event) async* {
+    jotApi.deleteJot(event.jotId);
+  }
+
+  Stream<JotState> _updateJotToState(UpdateJot event) async* {
+    jotApi.updateJot(event.jot);
   }
 }

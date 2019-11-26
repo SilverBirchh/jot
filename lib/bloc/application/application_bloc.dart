@@ -33,6 +33,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       }
     } else if (event is UninitialiseUser) {
       yield Uninitialized(null);
+    } else if (event is UpdateUser) {
+      yield Initialized(user: event.user);
     }
   }
 }

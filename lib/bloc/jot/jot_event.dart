@@ -10,6 +10,18 @@ class AddJot extends JotEvent {
   final Jot jot;
 }
 
+class DeleteJot extends JotEvent {
+  DeleteJot(this.jotId);
+
+  final String jotId;
+}
+
+class UpdateJot extends JotEvent {
+  UpdateJot(this.jot);
+
+  final Jot jot;
+}
+
 class StreamJots extends JotEvent {
   StreamJots(this.userId);
 

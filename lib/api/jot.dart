@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class JotApiBase {
   Future<void> addJot(Jot jot);
+  Future<void> deleteJot(String jotId);
+  Future<void> updateJot(Jot jot);
   Stream<List<Jot>> jots(String ownerId);
 }
 
@@ -14,6 +16,11 @@ class JotApi implements JotApiBase {
   @override
   Future<void> addJot(Jot jot) {
     return jotCollection.add(jot.toEntity().toDocument());
+  }
+
+  @override
+  Future<void> deleteJot(String jotId) async {
+    return jotCollection.document(jotId).delete();
   }
 
   @override
@@ -32,5 +39,10 @@ class JotApi implements JotApiBase {
     } catch (e) {
       throw Exception();
     }
+  }
+
+  @override
+  Future<void> updateJot(Jot jot) async {
+    jotCollection.document(jot.uid).updateData(jot.toEntity().toDocument());
   }
 }

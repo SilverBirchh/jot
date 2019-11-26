@@ -1,7 +1,4 @@
-import 'package:Jot/api/jot.dart';
-import 'package:Jot/bloc/jot/jot_bloc.dart';
-import 'package:Jot/ui/screens/create.dart';
-import 'package:Jot/ui/screens/feedback_page.dart';
+import 'package:Jot/bloc/filter/bloc.dart';
 
 import './main_exports.dart';
 
@@ -36,12 +33,12 @@ void main() async {
           builder: (BuildContext context) => JotApi(),
         ),
       ],
-      child: Jot(),
+      child: JotApp(),
     ),
   );
 }
 
-class Jot extends StatelessWidget {
+class JotApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -62,6 +59,9 @@ class Jot extends StatelessWidget {
           builder: (BuildContext context) => JotBloc(
             RepositoryProvider.of<JotApiBase>(context),
           ),
+        ),
+        BlocProvider<FilterBloc>(
+          builder: (BuildContext context) => FilterBloc(),
         ),
       ],
       child: MaterialApp(
@@ -85,8 +85,15 @@ class Jot extends StatelessWidget {
               page: FeedbackPage(),
             );
           } else if (settings.name == '/create') {
+            final Jot jot = settings.arguments;
             return SlideUpRoute(
-              page: Create(),
+              page: Create(
+                jot: jot,
+              ),
+            );
+          } else if (settings.name == '/tags') {
+            return SlideLeftRoute(
+              page: Tags(),
             );
           }
           // unknown route

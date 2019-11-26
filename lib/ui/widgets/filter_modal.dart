@@ -1,3 +1,5 @@
+import 'package:Jot/bloc/filter/bloc.dart';
+import 'package:Jot/main_exports.dart';
 import 'package:flutter/material.dart';
 
 class FilterModal extends StatefulWidget {
@@ -7,6 +9,12 @@ class FilterModal extends StatefulWidget {
 
 class _FilterModalState extends State<FilterModal> {
   bool onlySignificants = true;
+
+  @override
+  void initState() {
+    super.initState();
+    onlySignificants = BlocProvider.of<FilterBloc>(context).state.inportantOnly;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class _FilterModalState extends State<FilterModal> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Only significant Jots',
+                  'Only significant entries',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -45,6 +53,9 @@ class _FilterModalState extends State<FilterModal> {
               materialTapTargetSize: MaterialTapTargetSize.padded,
               child: Text('OK'),
               onPressed: () {
+                BlocProvider.of<FilterBloc>(context).add(
+                  UpdateFilters(inportantOnly: onlySignificants),
+                );
                 Navigator.pop(context);
               },
             )

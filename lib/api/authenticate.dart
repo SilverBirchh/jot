@@ -38,8 +38,17 @@ class Authentication implements AuthenticationBase {
   @override
   Future<User> isAuthenticated() async {
     final FirebaseUser currentUser = await _auth.currentUser();
+
+    if (currentUser == null) {
+      return null;
+    }
+
+    final DocumentSnapshot user = await usersCollection
+        .document(currentUser.uid)
+        .get();
+
     return currentUser != null
-        ? User.fromEntity(UserEntity.fromSnapshot(currentUser))
+        ? User.fromEntity(UserEntity.fromSnapshot(user))
         : null;
   }
 

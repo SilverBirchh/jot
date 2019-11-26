@@ -14,3 +14,9 @@ class CheckIsAuthenticated extends ApplicationEvent {
 }
 
 class UninitialiseUser extends ApplicationEvent {}
+
+class UpdateUser extends ApplicationEvent {
+  UpdateUser({@required this.user});
+
+  final User user;
+}

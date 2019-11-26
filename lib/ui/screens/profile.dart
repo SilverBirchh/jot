@@ -105,6 +105,30 @@ class Profile extends StatelessWidget {
               child: FlatButton(
                 padding: const EdgeInsets.all(16),
                 onPressed: () {
+                  Navigator.pushNamed(context, '/tags');
+                },
+                child: Row(
+                  children: const <Widget>[
+                    Text(
+                      'Manage Tags',
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.white12),
+                ),
+              ),
+              height: 70,
+              width: MediaQuery.of(context).size.width,
+              child: FlatButton(
+                padding: const EdgeInsets.all(16),
+                onPressed: () {
                   Navigator.pushNamed(context, '/feedback');
                 },
                 child: Row(

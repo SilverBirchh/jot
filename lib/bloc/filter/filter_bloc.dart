@@ -4,12 +4,14 @@ import './bloc.dart';
 
 class FilterBloc extends Bloc<FilterEvent, FilterState> {
   @override
-  FilterState get initialState => InitialFilterState();
+  FilterState get initialState => Filters(inportantOnly: false);
 
   @override
   Stream<FilterState> mapEventToState(
     FilterEvent event,
   ) async* {
-    // TODO: Add Logic
+    if (event is UpdateFilters) {
+      yield Filters(inportantOnly: event.inportantOnly);
+    }
   }
 }

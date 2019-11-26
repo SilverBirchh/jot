@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Create extends StatefulWidget {
+  Create({this.jot});
+
+  final Jot jot;
   @override
   _CreateState createState() => _CreateState();
 }
@@ -20,21 +23,29 @@ class _CreateState extends State<Create> {
   @override
   void initState() {
     super.initState();
-    jot = Jot(
-        chosenPeriod: Period.TODAY,
-        endDate: Timestamp.now(),
-        startDate: Timestamp.now(),
-        isImportant: false,
-        ownerId: BlocProvider.of<ApplicationBloc>(context).state.user.uid,
-        text: '');
+    if (widget.jot != null) {
+      _controller.text = widget.jot.text;
+    }
+
+    jot = widget.jot != null
+        ? widget.jot
+        : Jot(
+            chosenPeriod: Period.TODAY,
+            endDate: Timestamp.now(),
+            startDate: Timestamp.now(),
+            isImportant: false,
+            tags: [],
+            ownerId: BlocProvider.of<ApplicationBloc>(context).state.user.uid,
+            text: '');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _createKey,
+      
       appBar: AppBar(
-        title: Text('Create'),
+        title: widget.jot == null ? Text('Create') : Text('Amend'),
         centerTitle: true,
         backgroundColor: Color(0xff2ebf91),
         actions: <Widget>[
@@ -54,15 +65,27 @@ class _CreateState extends State<Create> {
               }
 
               jot.text = _controller.text;
-              BlocProvider.of<JotBloc>(context).add(
-                AddJot(jot),
-              );
+
+              if (widget.jot == null) {
+                BlocProvider.of<JotBloc>(context).add(
+                  AddJot(jot),
+                );
+              } else {
+                BlocProvider.of<JotBloc>(context).add(
+                  UpdateJot(
+                    widget.jot.copyWith(
+                      text: _controller.text,
+                    ),
+                  ),
+                );
+              }
               Navigator.pop(context);
             },
           )
         ],
       ),
       body: Container(
+//        color: Color(0xff539D8B),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
               colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
@@ -73,14 +96,15 @@ class _CreateState extends State<Create> {
         ),
         child: Column(
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'What have you accomplished recently that you\'re proud of?',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-                textAlign: TextAlign.center,
+            if (widget.jot == null)
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'What have you accomplished recently that you\'re proud of?',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -91,58 +115,101 @@ class _CreateState extends State<Create> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'When?',
+                        widget.jot == null ? 'When?' : 'Period:',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      Text(
-                        'Select a date or a time period',
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                      ),
+                      if (widget.jot == null)
+                        Text(
+                          'Select a date or a time period',
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
                     ],
                   ),
-                  DropdownButton<Period>(
-                    underline: Container(
-                      height: 1.0,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.white38,
-                            width: 1.0,
+                  widget.jot == null
+                      ? DropdownButton<Period>(
+                          underline: Container(
+                            height: 1.0,
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.white38,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.white,
-                    ),
-                    value: jot.chosenPeriod,
-                    selectedItemBuilder: (BuildContext context) {
-                      return timings.timePeriods.map((Period value) {
-                        return DropdownMenuItem<Period>(
-                          value: value,
-                          child: Text(
-                            timings.typeToString(value),
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
                           ),
-                        );
-                      }).toList();
-                    },
-                    items: timings.timePeriods.map((Period value) {
-                      return DropdownMenuItem<Period>(
-                        value: value,
-                        child: Text(
-                          timings.typeToString(value),
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (Period val) => calculateJotPeriod(val),
-                  ),
+                          value: jot.chosenPeriod,
+                          selectedItemBuilder: (BuildContext context) {
+                            return timings.timePeriods.map((Period value) {
+                              return DropdownMenuItem<Period>(
+                                value: value,
+                                child: Text(
+                                  timings.typeToString(value),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                              );
+                            }).toList();
+                          },
+                          items: timings.timePeriods.map((Period value) {
+                            return DropdownMenuItem<Period>(
+                              value: value,
+                              child: Text(
+                                timings.typeToString(value),
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (Period val) => calculateJotPeriod(val),
+                        )
+                      : Text(
+                          timings.typeToString(jot.chosenPeriod),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        )
                 ],
               ),
             ),
-            if (jot.chosenPeriod == Period.DATE)
+            if (widget.jot != null)
+              Column(
+                children: <Widget>[
+                  Divider(
+                    color: Colors.white38,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Created on:',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(color: Colors.white38),
+                            ),
+                          ),
+                          child: Text(
+                            _formatOtherTime(jot.startDate.toDate()),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            if (jot.chosenPeriod == Period.DATE && widget.jot == null)
               Column(
                 children: <Widget>[
                   Divider(
@@ -196,13 +263,14 @@ class _CreateState extends State<Create> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Significant?',
+                        widget.jot == null ? 'Significant?' : 'Significant:',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      Text(
-                        'Is this a important achievement?',
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                      ),
+                      if (widget.jot == null)
+                        Text(
+                          'Is this a important achievement?',
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
                     ],
                   ),
                   Checkbox(
@@ -210,12 +278,47 @@ class _CreateState extends State<Create> {
                     activeColor: Colors.indigo,
                     value: jot.isImportant,
                     onChanged: (bool val) {
-                      setState(() {
-                        jot.isImportant = val;
-                      });
+                      if (widget.jot == null) {
+                        setState(() {
+                          jot.isImportant = val;
+                        });
+                      }
                     },
                   )
                 ],
+              ),
+            ),
+            Divider(
+              color: Colors.white38,
+              indent: 16,
+              endIndent: 16,
+            ),
+            GestureDetector(
+              onTap: () => {
+                if (widget.jot == null) {_showTagsModal()}
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Tags',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        Text(
+                          (jot?.tags == null
+                              ? '0 tags'
+                              : '${jot.tags.length} ${jot.tags.length == 1 ? 'tag' : 'tags'}'),
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Divider(
@@ -302,5 +405,65 @@ class _CreateState extends State<Create> {
   String _formatOtherTime(DateTime otherDate) {
     final DateFormat dateFormat = DateFormat('d/M/yy');
     return dateFormat.format(otherDate);
+  }
+
+  void _showTagsModal() async {
+    List<String> tags =
+        BlocProvider.of<ApplicationBloc>(context).state.user.tags;
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return tags == null || tags.isEmpty
+            ? Container(
+                child: Wrap(
+                  children: <Widget>[
+                    ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/tags');
+                      },
+                      leading: Icon(Icons.edit),
+                      title: const Text('You have no tags. Tap to add tags.'),
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                child: Wrap(
+                  children: tags.map(
+                    (String tag) {
+                      return StatefulBuilder(
+                        builder:
+                            (BuildContext context, StateSetter setModalState) {
+                          return ListTile(
+                            onTap: () {},
+                            leading: Checkbox(
+                              onChanged: (bool val) {
+                                if (val) {
+                                  setState(() {
+                                    jot.tags.add(tag);
+                                  });
+                                } else {
+                                  final int index = jot.tags.indexOf(tag);
+                                  setState(() {
+                                    jot.tags.removeAt(index);
+                                  });
+                                }
+
+                                setModalState(() {
+                                  jot = jot;
+                                });
+                              },
+                              value: jot.tags.contains(tag),
+                            ),
+                            title: Text(tag),
+                          );
+                        },
+                      );
+                    },
+                  ).toList(),
+                ),
+              );
+      },
+    );
   }
 }

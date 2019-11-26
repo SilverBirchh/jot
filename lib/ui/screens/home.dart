@@ -34,6 +34,7 @@ class Home extends StatelessWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
+        // color: Color(0xff539D8B),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
               colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],

@@ -1,3 +1,4 @@
+import 'package:Jot/data/user/user_model.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -14,4 +15,11 @@ class SubmitFeedback extends ProfileEvent {
 class DeleteAccount extends ProfileEvent {
   DeleteAccount(this.userId);
   final String userId;
+}
+
+
+class UpdateUserProfile extends ProfileEvent {
+  UpdateUserProfile(this.user);
+
+  final User user;
 }
