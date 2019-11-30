@@ -51,6 +51,7 @@ class JotContainerLarge extends StatelessWidget {
                   BlocProvider.of<JotBloc>(context).add(
                     DeleteJot(jot.uid),
                   );
+                  onTap();
                 },
               ),
             ],
