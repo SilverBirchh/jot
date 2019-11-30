@@ -28,6 +28,12 @@ class StreamJots extends JotEvent {
   final String userId;
 }
 
+class StreamMoreJots extends JotEvent {
+  StreamMoreJots(this.userId);
+
+  final String userId;
+}
+
 class JotListUpdated extends JotEvent {
   JotListUpdated(this.jots);
   final List<Jot> jots;

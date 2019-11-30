@@ -7,6 +7,8 @@ abstract class JotApiBase {
   Future<void> deleteJot(String jotId);
   Future<void> updateJot(Jot jot);
   Stream<List<Jot>> jots(String ownerId);
+  Stream<List<Jot>> trailingJots(
+      String ownerId, DocumentSnapshot trailingDocument);
 }
 
 class JotApi implements JotApiBase {
@@ -29,6 +31,27 @@ class JotApi implements JotApiBase {
       return jotCollection
           .where('ownerId', isEqualTo: ownerId)
           .orderBy('endDate', descending: true)
+          .snapshots()
+          .map((QuerySnapshot snapshot) {
+        return snapshot.documents
+            .map((DocumentSnapshot doc) =>
+                Jot.fromEntity(JotEntity.fromSnapshot(doc)))
+            .toList();
+      });
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Stream<List<Jot>> trailingJots(
+      String ownerId, DocumentSnapshot trailingDocument) {
+    try {
+      return jotCollection
+          .where('ownerId', isEqualTo: ownerId)
+          .orderBy('endDate', descending: true)
+          .limit(50)
+          .startAfterDocument(trailingDocument)
           .snapshots()
           .map((QuerySnapshot snapshot) {
         return snapshot.documents

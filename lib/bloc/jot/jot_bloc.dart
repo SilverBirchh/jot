@@ -36,9 +36,9 @@ class JotBloc extends Bloc<JotEvent, JotState> {
     try {
       _streamSubscription?.cancel();
       _streamSubscription = jotApi.jots(event.userId).listen(
-        (List<Jot> dashboard) {
+        (List<Jot> jots) {
           add(
-            JotListUpdated(dashboard),
+            JotListUpdated(jots),
           );
         },
       );
@@ -48,7 +48,7 @@ class JotBloc extends Bloc<JotEvent, JotState> {
   }
 
   Stream<JotState> _mapDashboardUpdateToState(JotListUpdated event) async* {
-    yield LoadedJots(event.jots);
+    yield LoadedJots(jots: event.jots);
   }
 
   Stream<JotState> _addJotToState(AddJot event) async* {

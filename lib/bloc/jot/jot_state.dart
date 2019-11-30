@@ -11,6 +11,17 @@ class LoadingJots extends JotState {}
 class ErrorJots extends JotState {}
 
 class LoadedJots extends JotState {
-  LoadedJots(this.jots);
+  LoadedJots({this.jots, this.hasReachedMax});
   final List<Jot> jots;
+  final bool hasReachedMax;
+
+  LoadedJots copyWith({
+    List<Jot> jots,
+    bool hasReachedMax,
+  }) {
+    return LoadedJots(
+      jots: jots ?? this.jots,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
 }
