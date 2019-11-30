@@ -82,8 +82,38 @@ class _JotListState extends State<JotList> {
           return BlocBuilder<FilterBloc, FilterState>(
             builder: (BuildContext context, FilterState filterState) {
               List<Jot> allJots = List.from(jotState.jots);
-              if (filterState.inportantOnly) {
-                allJots.retainWhere((Jot jot) => jot.isImportant);
+              if (filterState.inportantOnly ||
+                  filterState.tagsToApply.isNotEmpty) {
+                allJots.retainWhere((Jot jot) {
+                  if (filterState.tagsToApply.isNotEmpty &&
+                      filterState.inportantOnly) {
+                    bool shouldRetain = false;
+                    for (String tag in jot.tags) {
+                      if (filterState.tagsToApply.contains(tag)) {
+                        shouldRetain = true;
+                        break;
+                      }
+                    }
+                    return jot.isImportant && shouldRetain;
+                  }
+                  if (filterState.tagsToApply.isEmpty &&
+                      filterState.inportantOnly) {
+                    return jot.isImportant;
+                  }
+
+                  if (filterState.tagsToApply.isNotEmpty &&
+                      !filterState.inportantOnly) {
+                    bool shouldRetain = false;
+                    for (String tag in jot.tags) {
+                      if (filterState.tagsToApply.contains(tag)) {
+                        shouldRetain = true;
+                        break;
+                      }
+                    }
+                    return shouldRetain;
+                  }
+                  return true;
+                });
               }
               return ListView.builder(
                 itemCount: allJots.length,

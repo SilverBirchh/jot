@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 abstract class FilterEvent {}
 
 class UpdateFilters extends FilterEvent {
-  UpdateFilters({this.inportantOnly});
+  UpdateFilters({this.inportantOnly, this.tagsToApply});
   final bool inportantOnly;
+  final List<String> tagsToApply;
 }

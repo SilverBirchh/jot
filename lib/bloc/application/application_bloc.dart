@@ -19,7 +19,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       try {
         yield Loading(state.user);
         await authentication.initialiseFirebaseUser(event.user);
-        yield Initialized(user: event.user);
+        final User authenticatedUser = await authentication.isAuthenticated();
+        yield Initialized(user: authenticatedUser);
       } catch (error) {
         print('Initialisation Error');
       }

@@ -24,23 +24,23 @@ class _TagsState extends State<Tags> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Tags'),
+        title: Text(
+          'Manage Tags',
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
-        backgroundColor: Color(0xff2ebf91),
+        backgroundColor: Color(0xffF5C5BE),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addTag(),
         child: Icon(Icons.add),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              stops: <double>[0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
+        color: Color(0xff539D8B),
         child: Center(
           child: tags.isEmpty
               ? Center(
@@ -49,12 +49,19 @@ class _TagsState extends State<Tags> {
                     style: TextStyle(color: Colors.white),
                   ),
                 )
-              : ListView.builder(
+              : ListView.separated(
                   itemCount: tags.length,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider(
+                      indent: 16,
+                      endIndent: 16,
+                      color: Color(0xffF5C5BE),
+                    );
+                  },
                   itemBuilder: (BuildContext context, int index) {
                     final tag = tags[index];
                     return Container(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.fromLTRB(16, 8, 8, 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

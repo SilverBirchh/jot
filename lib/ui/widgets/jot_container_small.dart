@@ -62,10 +62,17 @@ class JotContainerSmall extends StatelessWidget {
                     Container(child: datePeriod),
                     Row(
                       children: <Widget>[
+                        if (jot.isImportant)
+                          Icon(
+                            Icons.star,
+                            color: Color(0xffF5C5BE),
+                          ),
                         if (jot.tags != null)
                           Container(
                             padding: EdgeInsets.all(8),
-                            margin: jot.isImportant ? EdgeInsets.only(right: 8) : null,
+                            margin: jot.isImportant
+                                ? EdgeInsets.only(left: 8)
+                                : null,
                             decoration: BoxDecoration(
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(5),
@@ -77,11 +84,6 @@ class JotContainerSmall extends StatelessWidget {
                                   TextStyle(color: Colors.black, fontSize: 13),
                             ),
                           ),
-                        if (jot.isImportant)
-                          Icon(
-                            Icons.star,
-                            color: Color(0xff2ebf91),
-                          )
                       ],
                     )
                   ],

@@ -87,9 +87,12 @@ class JotContainerLarge extends StatelessWidget {
               children: <Widget>[
                 Container(child: datePeriod),
                 if (jot.isImportant)
-                  Icon(
-                    Icons.star,
-                    color: Color(0xff2ebf91),
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.star,
+                      color: Color(0xffF5C5BE),
+                    ),
                   )
               ],
             ),

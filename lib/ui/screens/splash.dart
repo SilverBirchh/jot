@@ -9,14 +9,7 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              stops: <double>[0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
+          color: Color(0xff539D8B),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +21,7 @@ class Splash extends StatelessWidget {
                 child: Text(
                   'Jot.',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xffF5C5BE),
                       fontSize: 70,
                       fontWeight: FontWeight.bold,
                       decoration: null),

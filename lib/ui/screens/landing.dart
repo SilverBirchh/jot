@@ -59,14 +59,7 @@ class Landing extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
-                    begin: FractionalOffset.topCenter,
-                    end: FractionalOffset.bottomCenter,
-                    stops: <double>[0.0, 1.0],
-                    tileMode: TileMode.clamp),
-              ),
+              color: Color(0xff539D8B),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

@@ -15,16 +15,19 @@ class Home extends StatelessWidget {
         },
       ),
       appBar: AppBar(
-        title: Text('Jot.'),
+        title: Text(
+          'Jot.',
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
-        backgroundColor: Color(0xff2ebf91),
+        backgroundColor: Color(0xffF5C5BE),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.filter_list),
+            icon: Icon(Icons.filter_list, color: Colors.black),
             onPressed: () => _showFilter(context),
           ),
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle, color: Colors.black),
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
@@ -34,16 +37,8 @@ class Home extends StatelessWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        // color: Color(0xff539D8B),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              stops: <double>[0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
-        child: JotList()
+        color: Color(0xff539D8B),
+        child: JotList(),
       ),
     );
   }

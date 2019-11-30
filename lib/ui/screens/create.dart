@@ -43,14 +43,35 @@ class _CreateState extends State<Create> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _createKey,
-      
       appBar: AppBar(
-        title: widget.jot == null ? Text('Create') : Text('Amend'),
+        title: widget.jot == null
+            ? Text(
+                'Create',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              )
+            : Text(
+                'Amend',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
         centerTitle: true,
-        backgroundColor: Color(0xff2ebf91),
+        backgroundColor: Color(0xffF5C5BE),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.save_alt),
+            icon: Icon(
+              Icons.save_alt,
+              color: Colors.black,
+            ),
             onPressed: () {
               if (_controller.text.isEmpty) {
                 final SnackBar snackBar = SnackBar(
@@ -85,16 +106,9 @@ class _CreateState extends State<Create> {
         ],
       ),
       body: Container(
-//        color: Color(0xff539D8B),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              stops: <double>[0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
-        child: Column(
+        color: Color(0xff539D8B),
+        height: MediaQuery.of(context).size.height,
+        child: ListView(
           children: <Widget>[
             if (widget.jot == null)
               Container(
@@ -104,6 +118,12 @@ class _CreateState extends State<Create> {
                   style: TextStyle(color: Colors.white, fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
+              ),
+            if (widget.jot == null)
+              Divider(
+                indent: 16,
+                endIndent: 16,
+                color: Color(0xffF5C5BE),
               ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -116,7 +136,7 @@ class _CreateState extends State<Create> {
                     children: <Widget>[
                       Text(
                         widget.jot == null ? 'When?' : 'Period:',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
                       ),
                       if (widget.jot == null)
                         Text(
@@ -170,7 +190,7 @@ class _CreateState extends State<Create> {
                           timings.typeToString(jot.chosenPeriod),
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.white,
+                            color: Colors.white60,
                           ),
                         )
                 ],
@@ -180,9 +200,9 @@ class _CreateState extends State<Create> {
               Column(
                 children: <Widget>[
                   Divider(
-                    color: Colors.white38,
                     indent: 16,
                     endIndent: 16,
+                    color: Color(0xffF5C5BE),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -191,7 +211,7 @@ class _CreateState extends State<Create> {
                       children: <Widget>[
                         Text(
                           'Created on:',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -201,7 +221,7 @@ class _CreateState extends State<Create> {
                           ),
                           child: Text(
                             _formatOtherTime(jot.startDate.toDate()),
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: TextStyle( color: Colors.white60, fontSize: 18),
                           ),
                         )
                       ],
@@ -213,9 +233,9 @@ class _CreateState extends State<Create> {
               Column(
                 children: <Widget>[
                   Divider(
-                    color: Colors.white38,
                     indent: 16,
                     endIndent: 16,
+                    color: Color(0xffF5C5BE),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -250,9 +270,9 @@ class _CreateState extends State<Create> {
                 ],
               ),
             Divider(
-              color: Colors.white38,
               indent: 16,
               endIndent: 16,
+              color: Color(0xffF5C5BE),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -264,7 +284,7 @@ class _CreateState extends State<Create> {
                     children: <Widget>[
                       Text(
                         widget.jot == null ? 'Significant?' : 'Significant:',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
                       ),
                       if (widget.jot == null)
                         Text(
@@ -289,9 +309,9 @@ class _CreateState extends State<Create> {
               ),
             ),
             Divider(
-              color: Colors.white38,
               indent: 16,
               endIndent: 16,
+              color: Color(0xffF5C5BE),
             ),
             GestureDetector(
               onTap: () => {
@@ -307,13 +327,13 @@ class _CreateState extends State<Create> {
                       children: <Widget>[
                         Text(
                           'Tags',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
                         ),
                         Text(
                           (jot?.tags == null
                               ? '0 tags'
                               : '${jot.tags.length} ${jot.tags.length == 1 ? 'tag' : 'tags'}'),
-                          style: TextStyle(color: Colors.white, fontSize: 13),
+                          style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 13),
                         ),
                       ],
                     ),
@@ -322,29 +342,27 @@ class _CreateState extends State<Create> {
               ),
             ),
             Divider(
-              color: Colors.white38,
               indent: 16,
               endIndent: 16,
+              color: Color(0xffF5C5BE),
             ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                width: MediaQuery.of(context).size.width,
-                child: TextField(
-                  focusNode: _focusNode,
-                  style: TextStyle(
-                      color: Colors.white, fontStyle: FontStyle.normal),
-                  decoration: InputDecoration(
-                    hintText: 'Add accomplishment...',
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 18),
-                    border: InputBorder.none,
-                  ),
-                  cursorColor: Colors.white,
-                  textCapitalization: TextCapitalization.sentences,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  controller: _controller,
+            Container(
+              padding: EdgeInsets.all(16),
+              width: MediaQuery.of(context).size.width,
+              child: TextField(
+                focusNode: _focusNode,
+                style:
+                    TextStyle(color: Colors.white, fontStyle: FontStyle.normal),
+                decoration: InputDecoration(
+                  hintText: 'Add accomplishment...',
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 18),
+                  border: InputBorder.none,
                 ),
+                cursorColor: Colors.white,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                controller: _controller,
               ),
             ),
           ],

@@ -41,9 +41,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
       child: Scaffold(
         key: _feedbackKey,
         appBar: AppBar(
-          title: const Text('Feedback'),
+          title: const Text(
+            'Feedback',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
           centerTitle: true,
-          backgroundColor: Color(0xff2ebf91),
+          backgroundColor: Color(0xffF5C5BE),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -58,7 +67,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 BlocProvider.of<ProfileBloc>(context)
                     .add(SubmitFeedback(_controller.text, userId));
               },
-              icon: Icon(Icons.send),
+              icon: Icon(
+                Icons.send,
+                color: Colors.black,
+              ),
             )
           ],
         ),

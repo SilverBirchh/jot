@@ -9,10 +9,15 @@ class FilterModal extends StatefulWidget {
 
 class _FilterModalState extends State<FilterModal> {
   bool onlySignificants = true;
+  List<String> tagsToApply = [];
+  List<dynamic> listOfTags = [];
 
   @override
   void initState() {
     super.initState();
+    listOfTags =
+        BlocProvider.of<ApplicationBloc>(context).state.user.tags ?? <String>[];
+    tagsToApply = BlocProvider.of<FilterBloc>(context).state.tagsToApply;
     onlySignificants = BlocProvider.of<FilterBloc>(context).state.inportantOnly;
   }
 
@@ -21,30 +26,68 @@ class _FilterModalState extends State<FilterModal> {
     return SimpleDialog(
       title: Text('Filter Jots'),
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Only significant entries',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+              Checkbox(
+                checkColor: Colors.white,
+                activeColor: Colors.indigo,
+                value: onlySignificants,
+                onChanged: (bool val) {
+                  setState(() {
+                    onlySignificants = val;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+        ...listOfTags.map((dynamic tag) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  'Only significant entries',
-                  style: TextStyle(fontSize: 18),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      tag,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                Checkbox(
+                  checkColor: Colors.white,
+                  activeColor: Colors.indigo,
+                  value: tagsToApply.contains(tag),
+                  onChanged: (bool val) {
+                    if (tagsToApply.contains(tag)) {
+                      setState(() {
+                        tagsToApply.remove(tag);
+                      });
+                    } else {
+                      setState(() {
+                        tagsToApply.add(tag);
+                      });
+                    }
+                  },
                 ),
               ],
             ),
-            Checkbox(
-              checkColor: Colors.white,
-              activeColor: Colors.indigo,
-              value: onlySignificants,
-              onChanged: (bool val) {
-                setState(() {
-                  onlySignificants = val;
-                });
-              },
-            )
-          ],
-        ),
+          );
+        }).toList(),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -54,7 +97,9 @@ class _FilterModalState extends State<FilterModal> {
               child: Text('OK'),
               onPressed: () {
                 BlocProvider.of<FilterBloc>(context).add(
-                  UpdateFilters(inportantOnly: onlySignificants),
+                  UpdateFilters(
+                      inportantOnly: onlySignificants,
+                      tagsToApply: tagsToApply),
                 );
                 Navigator.pop(context);
               },

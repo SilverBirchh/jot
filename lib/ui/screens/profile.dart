@@ -34,26 +34,29 @@ class Profile extends StatelessWidget {
     return Scaffold(
       key: _profileKey,
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(
+          'Profile',
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
-        backgroundColor: Color(0xff2ebf91),
+        backgroundColor: Color(0xffF5C5BE),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[Color(0xff2ebf91), Color(0xff8360c3)],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              stops: <double>[0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
+        color: Color(0xff539D8B),
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 0, 50),
+              padding: const EdgeInsets.fromLTRB(8, 24, 0, 8),
               child: Row(
                 children: <Widget>[
                   Container(
@@ -93,13 +96,12 @@ class Profile extends StatelessWidget {
                 ],
               ),
             ),
+            Divider(
+              indent: 16,
+              endIndent: 16,
+              color: Color(0xffF5C5BE),
+            ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.white12),
-                ),
-              ),
-              margin: EdgeInsets.only(top: 16),
               height: 70,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
@@ -118,12 +120,12 @@ class Profile extends StatelessWidget {
                 ),
               ),
             ),
+            Divider(
+              indent: 16,
+              endIndent: 16,
+              color: Color(0xffF5C5BE),
+            ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.white12),
-                ),
-              ),
               height: 70,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
@@ -142,12 +144,12 @@ class Profile extends StatelessWidget {
                 ),
               ),
             ),
+            Divider(
+              indent: 16,
+              endIndent: 16,
+              color: Color(0xffF5C5BE),
+            ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.white12),
-                ),
-              ),
               height: 70,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
@@ -164,13 +166,12 @@ class Profile extends StatelessWidget {
                 ),
               ),
             ),
+            Divider(
+              indent: 16,
+              endIndent: 16,
+              color: Color(0xffF5C5BE),
+            ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.white12),
-                  bottom: BorderSide(color: Colors.white12),
-                ),
-              ),
               height: 70,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
@@ -186,6 +187,11 @@ class Profile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
               ),
+            ),
+            Divider(
+              indent: 16,
+              endIndent: 16,
+              color: Color(0xffF5C5BE),
             ),
           ],
         ),
