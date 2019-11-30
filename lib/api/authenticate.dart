@@ -43,9 +43,8 @@ class Authentication implements AuthenticationBase {
       return null;
     }
 
-    final DocumentSnapshot user = await usersCollection
-        .document(currentUser.uid)
-        .get();
+    final DocumentSnapshot user =
+        await usersCollection.document(currentUser.uid).get();
 
     return currentUser != null
         ? User.fromEntity(UserEntity.fromSnapshot(user))
@@ -55,13 +54,10 @@ class Authentication implements AuthenticationBase {
   @override
   Future<void> initialiseFirebaseUser(User user) async {
     try {
-      final QuerySnapshot result = await usersCollection
-          .where('uid', isEqualTo: user.uid)
-          .getDocuments();
+      final DocumentSnapshot userDoc =
+          await usersCollection.document(user.uid).get();
 
-      final List<DocumentSnapshot> documents = result.documents;
-
-      if (documents.isEmpty) {
+      if (userDoc != null || userDoc.exists) {
         usersCollection
             .document(user.uid)
             .setData(user.toEntity().toDocument());

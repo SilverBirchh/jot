@@ -115,6 +115,19 @@ class _JotListState extends State<JotList> {
                   return true;
                 });
               }
+
+              if (allJots.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Text(
+                      'Sorry, no jots match your filters. Try a different sets of filters.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
+                );
+              }
               return ListView.builder(
                 itemCount: allJots.length,
                 itemBuilder: (BuildContext context, int index) {

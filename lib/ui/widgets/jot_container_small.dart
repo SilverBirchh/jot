@@ -67,7 +67,7 @@ class JotContainerSmall extends StatelessWidget {
                             Icons.star,
                             color: Color(0xffF5C5BE),
                           ),
-                        if (jot.tags != null)
+                        if (jot.tags != null && jot.tags.isNotEmpty)
                           Container(
                             padding: EdgeInsets.all(8),
                             margin: jot.isImportant

@@ -20,3 +20,5 @@ class UpdateUser extends ApplicationEvent {
 
   final User user;
 }
+
+

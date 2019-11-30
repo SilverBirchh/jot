@@ -31,7 +31,14 @@ class UserEntity {
   }
 
   static UserEntity fromSnapshot(DocumentSnapshot snap) {
-    return UserEntity(snap.documentID, snap.data['username'], snap.data['photoUrl'], List<String>.from(snap.data['tags'].cast<String>(),));
+    return UserEntity(
+      snap.documentID,
+      snap.data['username'],
+      snap.data['photoUrl'],
+      snap.data['tags'] == null
+          ? <String>[]
+          : List<String>.from(snap.data['tags'].cast<String>()),
+    );
   }
 
   Map<String, Object> toDocument() {

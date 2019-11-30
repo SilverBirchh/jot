@@ -56,46 +56,61 @@ class Landing extends StatelessWidget {
                     .add(InitialiseUser(user: state.user));
               }
             },
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: Color(0xff539D8B),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    decoration: null,
-                    margin: const EdgeInsets.only(top: 50.0),
-                    child: Text(
-                      'Jot.',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 70,
-                          fontWeight: FontWeight.bold,
-                          decoration: null),
+            child: BlocListener<ApplicationBloc, ApplicationState>(
+              listener: (BuildContext context, ApplicationState state) {
+                if (state is InitError) {
+                  final SnackBar snackBar = SnackBar(
+                    duration: Duration(seconds: 1),
+                    content: const Text(
+                        'Hmm there was a problem getting started. Please try again.'),
+                  );
+
+                  _authenticationKey.currentState.showSnackBar(snackBar);
+                }
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Color(0xff539D8B),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      decoration: null,
+                      margin: const EdgeInsets.only(top: 50.0),
+                      child: Text(
+                        'Jot.',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 70,
+                            fontWeight: FontWeight.bold,
+                            decoration: null),
+                      ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin:
-                        const EdgeInsets.only(top: 50.0, right: 16, left: 16),
-                    child: Text(
-                      'Keep track of your accomplishments over time. So when you need them the most you can easily recall the amazing things you\'ve been up to!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18, letterSpacing: 1, color: Colors.white),
+                    Container(
+                      alignment: Alignment.center,
+                      margin:
+                          const EdgeInsets.only(top: 50.0, right: 16, left: 16),
+                      child: Text(
+                        'Keep track of your accomplishments over time. So when you need them the most you can easily recall the amazing things you\'ve been up to!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18,
+                            letterSpacing: 1,
+                            color: Colors.white),
+                      ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(top: 50.0),
-                    child: GoogleSignInButton(
-                      onPressed: () {
-                        authenticationBloc.add(SignIn());
-                      },
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(top: 50.0),
+                      child: GoogleSignInButton(
+                        onPressed: () {
+                          authenticationBloc.add(SignIn());
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

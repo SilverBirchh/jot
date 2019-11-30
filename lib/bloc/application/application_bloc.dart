@@ -23,6 +23,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         yield Initialized(user: authenticatedUser);
       } catch (error) {
         print('Initialisation Error');
+        yield InitError();
       }
     } else if (event is CheckIsAuthenticated) {
       yield Loading(state.user);

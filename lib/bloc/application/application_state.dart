@@ -38,3 +38,7 @@ class Initialized extends ApplicationState {
   @override
   String toString() => 'Initialized { username: ${user.username} }';
 }
+
+class InitError extends ApplicationState {
+    const InitError() : super(null);
+}
