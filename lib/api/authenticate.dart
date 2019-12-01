@@ -57,7 +57,7 @@ class Authentication implements AuthenticationBase {
       final DocumentSnapshot userDoc =
           await usersCollection.document(user.uid).get();
 
-      if (userDoc != null || userDoc.exists) {
+      if (userDoc == null || !userDoc.exists) {
         usersCollection
             .document(user.uid)
             .setData(user.toEntity().toDocument());

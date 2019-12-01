@@ -81,7 +81,7 @@ class Landing extends StatelessWidget {
                       child: Text(
                         'Jot.',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xffF5C5BE),
                             fontSize: 70,
                             fontWeight: FontWeight.bold,
                             decoration: null),
