@@ -13,7 +13,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   ) async* {
     if (event is UpdateFilters) {
       yield Filters(
-          inportantOnly: event.inportantOnly, tagsToApply: event.tagsToApply);
+          inportantOnly: event.inportantOnly,
+          tagsToApply: event.tagsToApply,
+          fromDate: event.fromDate,
+          toDate: event.toDate);
     }
   }
 }

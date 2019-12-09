@@ -7,6 +7,7 @@ abstract class JotApiBase {
   Future<void> deleteJot(String jotId);
   Future<void> updateJot(Jot jot);
   Stream<List<Jot>> jots(String ownerId);
+  Stream<List<Jot>> jotsByDates(String ownerId, DateTime toDate, DateTime fromDate);
   Stream<List<Jot>> trailingJots(
       String ownerId, DocumentSnapshot trailingDocument);
 }
@@ -67,5 +68,26 @@ class JotApi implements JotApiBase {
   @override
   Future<void> updateJot(Jot jot) async {
     jotCollection.document(jot.uid).updateData(jot.toEntity().toDocument());
+  }
+
+  @override
+  Stream<List<Jot>> jotsByDates(String ownerId, DateTime toDate, DateTime fromDate) {
+    try {
+      return jotCollection
+          .where('ownerId', isEqualTo: ownerId)
+          .where('endDate', isLessThanOrEqualTo: Timestamp.fromDate(toDate))
+          .where('endDate', isGreaterThanOrEqualTo: Timestamp.fromDate(fromDate))
+          .orderBy('endDate', descending: true)
+          .limit(50)
+          .snapshots()
+          .map((QuerySnapshot snapshot) {
+        return snapshot.documents
+            .map((DocumentSnapshot doc) =>
+                Jot.fromEntity(JotEntity.fromSnapshot(doc)))
+            .toList();
+      });
+    } catch (e) {
+      throw Exception();
+    }
   }
 }

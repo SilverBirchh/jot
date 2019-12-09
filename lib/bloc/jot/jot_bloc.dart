@@ -28,7 +28,9 @@ class JotBloc extends Bloc<JotEvent, JotState> {
       yield LoadingJots();
       yield* _mapLoadAllPanelsToState(event);
     } else if (event is JotListUpdated) {
-      yield* _mapDashboardUpdateToState(event);
+      yield* _mapJotsUpdateToState(event);
+    } else if (event is StreamJotsByDate) {
+      yield* _mapJotsByDateToState(event);
     }
   }
 
@@ -47,7 +49,27 @@ class JotBloc extends Bloc<JotEvent, JotState> {
     }
   }
 
-  Stream<JotState> _mapDashboardUpdateToState(JotListUpdated event) async* {
+  Stream<JotState> _mapJotsByDateToState(StreamJotsByDate event) async* {
+    final DateTime toDate =
+        event.toDate == null ? DateTime.now() : event.toDate;
+    final DateTime fromDate =
+        event.fromDate == null ? DateTime(1980) : event.fromDate;
+    try {
+      _streamSubscription?.cancel();
+      _streamSubscription =
+          jotApi.jotsByDates(event.userId, toDate, fromDate).listen(
+        (List<Jot> jots) {
+          add(
+            JotListUpdated(jots),
+          );
+        },
+      );
+    } catch (e) {
+      yield ErrorJots();
+    }
+  }
+
+  Stream<JotState> _mapJotsUpdateToState(JotListUpdated event) async* {
     yield LoadedJots(jots: event.jots);
   }
 

@@ -28,6 +28,14 @@ class StreamJots extends JotEvent {
   final String userId;
 }
 
+class StreamJotsByDate extends JotEvent {
+  StreamJotsByDate(this.userId, {this.fromDate, this.toDate});
+
+  final String userId;
+  final DateTime toDate;
+  final DateTime fromDate;
+}
+
 class StreamMoreJots extends JotEvent {
   StreamMoreJots(this.userId);
 
