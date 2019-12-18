@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 abstract class JotApiBase {
   Future<void> addJot(Jot jot);
   Future<void> deleteJot(String jotId);
-  Future<void> updateJot(Jot jot);
+  Future<void> updateJot(Jot jot, String uid);
   Stream<List<Jot>> jots(String ownerId);
   Stream<List<Jot>> jotsByDates(String ownerId, DateTime toDate, DateTime fromDate);
   Stream<List<Jot>> trailingJots(
@@ -66,8 +66,8 @@ class JotApi implements JotApiBase {
   }
 
   @override
-  Future<void> updateJot(Jot jot) async {
-    jotCollection.document(jot.uid).updateData(jot.toEntity().toDocument());
+  Future<void> updateJot(Jot jot, String uid) async {
+    jotCollection.document(uid).updateData(jot.toEntity().toDocument());
   }
 
   @override

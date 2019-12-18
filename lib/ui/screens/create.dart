@@ -28,7 +28,14 @@ class _CreateState extends State<Create> {
     }
 
     jot = widget.jot != null
-        ? widget.jot
+        ? Jot(
+            chosenPeriod: widget.jot.chosenPeriod,
+            endDate: widget.jot.endDate,
+            startDate: widget.jot.startDate,
+            isImportant: widget.jot.isImportant,
+            tags: List.from(widget.jot.tags),
+            ownerId: BlocProvider.of<ApplicationBloc>(context).state.user.uid,
+            text: widget.jot.text)
         : Jot(
             chosenPeriod: Period.TODAY,
             endDate: Timestamp.now(),
@@ -93,11 +100,7 @@ class _CreateState extends State<Create> {
                 );
               } else {
                 BlocProvider.of<JotBloc>(context).add(
-                  UpdateJot(
-                    widget.jot.copyWith(
-                      text: _controller.text,
-                    ),
-                  ),
+                  UpdateJot(jot, widget.jot.uid),
                 );
               }
               Navigator.pop(context);
@@ -136,7 +139,7 @@ class _CreateState extends State<Create> {
                     children: <Widget>[
                       Text(
                         widget.jot == null ? 'When?' : 'Period:',
-                        style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       if (widget.jot == null)
                         Text(
@@ -145,58 +148,49 @@ class _CreateState extends State<Create> {
                         ),
                     ],
                   ),
-                  widget.jot == null
-                      ? DropdownButton<Period>(
-                          underline: Container(
-                            height: 1.0,
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.white38,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
+                  DropdownButton<Period>(
+                    underline: Container(
+                      height: 1.0,
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.white38,
+                            width: 1.0,
                           ),
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.white,
+                    ),
+                    value: jot.chosenPeriod,
+                    selectedItemBuilder: (BuildContext context) {
+                      return timings.timePeriods.map((Period value) {
+                        return DropdownMenuItem<Period>(
+                          value: value,
+                          child: Text(
+                            timings.typeToString(value),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
-                          value: jot.chosenPeriod,
-                          selectedItemBuilder: (BuildContext context) {
-                            return timings.timePeriods.map((Period value) {
-                              return DropdownMenuItem<Period>(
-                                value: value,
-                                child: Text(
-                                  timings.typeToString(value),
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              );
-                            }).toList();
-                          },
-                          items: timings.timePeriods.map((Period value) {
-                            return DropdownMenuItem<Period>(
-                              value: value,
-                              child: Text(
-                                timings.typeToString(value),
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (Period val) => calculateJotPeriod(val),
-                        )
-                      : Text(
-                          timings.typeToString(jot.chosenPeriod),
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white60,
-                          ),
-                        )
+                        );
+                      }).toList();
+                    },
+                    items: timings.timePeriods.map((Period value) {
+                      return DropdownMenuItem<Period>(
+                        value: value,
+                        child: Text(
+                          timings.typeToString(value),
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (Period val) => calculateJotPeriod(val),
+                  )
                 ],
               ),
             ),
-            if (widget.jot != null)
+            if (jot.chosenPeriod == Period.DATE && widget.jot != null)
               Column(
                 children: <Widget>[
                   Divider(
@@ -210,20 +204,33 @@ class _CreateState extends State<Create> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Created on:',
-                          style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
+                          'Date:',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(color: Colors.white38),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Colors.white38),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            _formatOtherTime(jot.startDate.toDate()),
-                            style: TextStyle( color: Colors.white60, fontSize: 18),
-                          ),
-                        )
+                            child: GestureDetector(
+                              onTap: () {
+                                _focusNode.unfocus();
+                                _selectDate(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.white38),
+                                  ),
+                                ),
+                                child: Text(
+                                  _formatOtherTime(jot.startDate.toDate()),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                              ),
+                            ))
                       ],
                     ),
                   ),
@@ -284,7 +291,7 @@ class _CreateState extends State<Create> {
                     children: <Widget>[
                       Text(
                         widget.jot == null ? 'Significant?' : 'Significant:',
-                        style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       if (widget.jot == null)
                         Text(
@@ -298,11 +305,9 @@ class _CreateState extends State<Create> {
                     activeColor: Colors.indigo,
                     value: jot.isImportant,
                     onChanged: (bool val) {
-                      if (widget.jot == null) {
-                        setState(() {
-                          jot.isImportant = val;
-                        });
-                      }
+                      setState(() {
+                        jot.isImportant = val;
+                      });
                     },
                   )
                 ],
@@ -314,9 +319,7 @@ class _CreateState extends State<Create> {
               color: Color(0xffF5C5BE),
             ),
             GestureDetector(
-              onTap: () => {
-                if (widget.jot == null) {_showTagsModal()}
-              },
+              onTap: () => {_showTagsModal()},
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -327,13 +330,13 @@ class _CreateState extends State<Create> {
                       children: <Widget>[
                         Text(
                           'Tags',
-                          style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 18),
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         Text(
                           (jot?.tags == null
                               ? '0 tags'
                               : '${jot.tags.length} ${jot.tags.length == 1 ? 'tag' : 'tags'}'),
-                          style: TextStyle(color: widget.jot == null ? Colors.white : Colors.white60, fontSize: 13),
+                          style: TextStyle(color: Colors.white, fontSize: 13),
                         ),
                       ],
                     ),

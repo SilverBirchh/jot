@@ -67,6 +67,7 @@ class JotContainerLarge extends StatelessWidget {
                   (dynamic tag) {
                     return Container(
                       padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.only(right: 8),
                       decoration: BoxDecoration(
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(5),

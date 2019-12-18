@@ -17,9 +17,10 @@ class DeleteJot extends JotEvent {
 }
 
 class UpdateJot extends JotEvent {
-  UpdateJot(this.jot);
+  UpdateJot(this.jot, this.uid);
 
   final Jot jot;
+  final String uid;
 }
 
 class StreamJots extends JotEvent {

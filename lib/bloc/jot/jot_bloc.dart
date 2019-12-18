@@ -82,6 +82,6 @@ class JotBloc extends Bloc<JotEvent, JotState> {
   }
 
   Stream<JotState> _updateJotToState(UpdateJot event) async* {
-    jotApi.updateJot(event.jot);
+    jotApi.updateJot(event.jot, event.uid);
   }
 }
