@@ -24,6 +24,13 @@ class AuthenticationBloc
       } catch (error) {
         yield const AuthenticationError();
       }
+    } else if (event is SignInAnon) {
+      try {
+        final User user = await authentication.signInAnon();
+        yield Success(user);
+      } catch (error) {
+        yield const AuthenticationError();
+      }
     }
   }
 }

@@ -62,30 +62,49 @@ class Profile extends StatelessWidget {
                   Container(
                     height: 125,
                     width: 125,
-                    child: CachedNetworkImage(
-                      imageUrl: photoUrl,
-                      imageBuilder:
-                          (BuildContext context, ImageProvider imageProvider) =>
-                              Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
+                    child: photoUrl != null
+                        ? CachedNetworkImage(
+                            imageUrl: photoUrl,
+                            imageBuilder: (BuildContext context,
+                                    ImageProvider imageProvider) =>
+                                Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            placeholder: (BuildContext context, String url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (BuildContext context, String url,
+                                    Object error) =>
+                                Icon(Icons.error),
+                          )
+                        : Container(
+                            width: 300.0,
+                            height: 300.0,
+                            child: Center(
+                              child: Text(
+                                "A",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Color(0xff539D8B),
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                            decoration: new BoxDecoration(
+                              color: Color(0xffF5C5BE),
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                      ),
-                      placeholder: (BuildContext context, String url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget:
-                          (BuildContext context, String url, Object error) =>
-                              Icon(Icons.error),
-                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 30),
                     child: Text(
-                      name,
+                      name == null ? "Signed in anonymously" : name,
                       style: const TextStyle(
                         fontSize: 22,
                         color: Colors.white,

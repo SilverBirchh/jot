@@ -1,6 +1,7 @@
 import 'package:Jot/api/authenticate.dart';
 import 'package:Jot/bloc/application/bloc.dart';
 import 'package:Jot/bloc/authentication/bloc.dart';
+import 'package:Jot/ui/widgets/anon_sign_in.dart';
 import 'package:Jot/ui/widgets/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,14 +101,26 @@ class Landing extends StatelessWidget {
                             color: Colors.white),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(top: 50.0),
-                      child: GoogleSignInButton(
-                        onPressed: () {
-                          authenticationBloc.add(SignIn());
-                        },
-                      ),
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.center,
+                          child: GoogleSignInButton(
+                            onPressed: () {
+                              authenticationBloc.add(SignIn());
+                            },
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: AnonSignIn(
+                            onPressed: () {
+                              authenticationBloc.add(SignInAnon());
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -5,7 +5,7 @@ import './user_entity.dart';
 class User {
   const User(
       {@required this.uid, @required this.username, this.photoUrl, this.tags})
-      : assert(uid != null && username != null);
+      : assert(uid != null);
 
   final String uid;
   final String username;

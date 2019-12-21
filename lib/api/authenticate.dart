@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class AuthenticationBase {
   Future<User> signIn();
+  Future<User> signInAnon();
   Future<User> isAuthenticated();
   Future<void> initialiseFirebaseUser(User user);
 }
@@ -30,6 +31,16 @@ class Authentication implements AuthenticationBase {
 
     final FirebaseUser user =
         (await _auth.signInWithCredential(credential)).user;
+
+    return User(
+        uid: user.uid, username: user.displayName, photoUrl: user.photoUrl);
+  }
+
+    @override
+  Future<User> signInAnon() async {
+
+    final AuthResult authResult = await _auth.signInAnonymously();
+    final FirebaseUser user = authResult.user;
 
     return User(
         uid: user.uid, username: user.displayName, photoUrl: user.photoUrl);
