@@ -24,13 +24,13 @@ void main() async {
     MultiRepositoryProvider(
       providers: <RepositoryProvider<dynamic>>[
         RepositoryProvider<AuthenticationBase>(
-          builder: (BuildContext context) => Authentication(),
+          create: (BuildContext context) => Authentication(),
         ),
         RepositoryProvider<ProfileApiBase>(
-          builder: (BuildContext context) => ProfileApi(),
+          create: (BuildContext context) => ProfileApi(),
         ),
         RepositoryProvider<JotApiBase>(
-          builder: (BuildContext context) => JotApi(),
+          create: (BuildContext context) => JotApi(),
         ),
       ],
       child: JotApp(),
@@ -44,24 +44,24 @@ class JotApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<Bloc<dynamic, dynamic>>>[
         BlocProvider<ApplicationBloc>(
-          builder: (BuildContext context) => ApplicationBloc(
+          create: (BuildContext context) => ApplicationBloc(
             authentication: RepositoryProvider.of<AuthenticationBase>(context),
           )..add(
               CheckIsAuthenticated(),
             ),
         ),
         BlocProvider<ProfileBloc>(
-          builder: (BuildContext context) => ProfileBloc(
+          create: (BuildContext context) => ProfileBloc(
             RepositoryProvider.of<ProfileApiBase>(context),
           ),
         ),
         BlocProvider<JotBloc>(
-          builder: (BuildContext context) => JotBloc(
+          create: (BuildContext context) => JotBloc(
             RepositoryProvider.of<JotApiBase>(context),
           ),
         ),
         BlocProvider<FilterBloc>(
-          builder: (BuildContext context) => FilterBloc(),
+          create: (BuildContext context) => FilterBloc(),
         ),
       ],
       child: MaterialApp(
@@ -73,12 +73,12 @@ class JotApp extends StatelessWidget {
         initialRoute: '/',
         onGenerateRoute: (settings) {
           if (settings.name == "/home") {
-            return SlideLeftRoute(
-              page: Home(),
+            return InstantRoute(
+              builder: (_) => Home(),
             );
           } else if (settings.name == '/profile') {
-            return SlideLeftRoute(
-              page: Profile(),
+            return InstantRoute(
+              builder: (_) => Profile(),
             );
           } else if (settings.name == '/feedback') {
             return SlideLeftRoute(
@@ -94,6 +94,14 @@ class JotApp extends StatelessWidget {
           } else if (settings.name == '/tags') {
             return SlideLeftRoute(
               page: Tags(),
+            );
+          } else if (settings.name == '/plans') {
+            return InstantRoute(
+              builder: (_) => PlansPage(),
+            );
+          } else if (settings.name == '/metrics') {
+            return InstantRoute(
+              builder: (_) => MetricsPage(),
             );
           }
           // unknown route

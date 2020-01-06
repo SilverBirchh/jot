@@ -1,4 +1,5 @@
 import 'package:Jot/ui/widgets/filter_modal.dart';
+import 'package:Jot/ui/widgets/jot_drawer.dart';
 import 'package:Jot/ui/widgets/jot_list.dart';
 import 'package:flutter/material.dart';
 
@@ -14,23 +15,19 @@ class Home extends StatelessWidget {
           Navigator.pushNamed(context, '/create');
         },
       ),
+      drawer: JotDrawer(),
       appBar: AppBar(
         title: Text(
           'Jot.',
           style: TextStyle(color: Colors.black),
         ),
+        iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
         backgroundColor: Color(0xffF5C5BE),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.filter_list, color: Colors.black),
             onPressed: () => _showFilter(context),
-          ),
-          IconButton(
-            icon: Icon(Icons.account_circle, color: Colors.black),
-            onPressed: () {
-              Navigator.pushNamed(context, '/profile');
-            },
           ),
         ],
       ),

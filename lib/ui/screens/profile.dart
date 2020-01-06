@@ -1,6 +1,7 @@
 import 'package:Jot/bloc/application/application_bloc.dart';
 import 'package:Jot/bloc/application/application_event.dart';
 import 'package:Jot/bloc/profile/bloc.dart';
+import 'package:Jot/ui/widgets/jot_drawer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,21 +34,17 @@ class Profile extends StatelessWidget {
 
     return Scaffold(
       key: _profileKey,
+      drawer: JotDrawer(),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           'Profile',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor: Color(0xffF5C5BE),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
+      
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -95,7 +92,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            decoration: new BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Color(0xffF5C5BE),
                               shape: BoxShape.circle,
                             ),

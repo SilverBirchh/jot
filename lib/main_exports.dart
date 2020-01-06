@@ -17,4 +17,6 @@ export 'package:Jot/bloc/jot/jot_bloc.dart';
 export 'package:Jot/ui/screens/create.dart';
 export 'package:Jot/ui/screens/feedback_page.dart';
 export 'package:Jot/ui/screens/tags.dart';
+export 'package:Jot/ui/screens/metrics.dart';
+export 'package:Jot/ui/screens/plans.dart';
 export 'package:Jot/data/jot/jot_model.dart';
