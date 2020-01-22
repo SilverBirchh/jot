@@ -1,5 +1,3 @@
-import 'package:Jot/bloc/filter/bloc.dart';
-
 import './main_exports.dart';
 
 void main() async {
@@ -102,6 +100,10 @@ class JotApp extends StatelessWidget {
           } else if (settings.name == '/metrics') {
             return InstantRoute(
               builder: (_) => MetricsPage(),
+            );
+          } else if (settings.name == '/create-plan') {
+            return SlideUpRoute(
+              page: CreatePlanPage(),
             );
           }
           // unknown route

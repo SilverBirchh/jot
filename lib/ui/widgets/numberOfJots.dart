@@ -17,7 +17,6 @@ class NumberOfJotsState extends State<NumberOfJots> {
     return AspectRatio(
       aspectRatio: 1.8,
       child: Card(
-        color: const Color(0xff2c4260),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -30,7 +29,7 @@ class NumberOfJotsState extends State<NumberOfJots> {
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
             ),
             Expanded(

@@ -2,12 +2,12 @@ import 'package:Jot/ui/widgets/jot_drawer.dart';
 import 'package:flutter/material.dart';
 
 class PlansPage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _metricsKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _planKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _metricsKey,
+      key: _planKey,
       drawer: JotDrawer(),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -20,9 +20,16 @@ class PlansPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Color(0xffF5C5BE),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, '/create-plan');
+        },
+      ),
       body: Container(
-        width: 0,
-        height: 0,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        color: Color(0xff539D8B),
       ),
     );
   }

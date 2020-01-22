@@ -21,7 +21,6 @@ class SignificantJotsPieState extends State<SignificantJotsPie> {
     return AspectRatio(
       aspectRatio: 1.3,
       child: Card(
-        color: const Color(0xff2c4260),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -32,7 +31,7 @@ class SignificantJotsPieState extends State<SignificantJotsPie> {
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
             ),
             Row(
@@ -73,7 +72,7 @@ class SignificantJotsPieState extends State<SignificantJotsPie> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const <Widget>[
                     Indicator(
-                      textColor: Colors.white,
+                      textColor: Colors.black,
                       color: Color(0xff0293ee),
                       text: 'Jots',
                       isSquare: true,
@@ -82,7 +81,7 @@ class SignificantJotsPieState extends State<SignificantJotsPie> {
                       height: 4,
                     ),
                     Indicator(
-                      textColor: Colors.white,
+                      textColor: Colors.black,
                       color: Color(0xfff8b250),
                       text: 'Significant Jots',
                       isSquare: true,

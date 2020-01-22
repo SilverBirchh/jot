@@ -20,3 +20,5 @@ export 'package:Jot/ui/screens/tags.dart';
 export 'package:Jot/ui/screens/metrics.dart';
 export 'package:Jot/ui/screens/plans.dart';
 export 'package:Jot/data/jot/jot_model.dart';
+export 'package:Jot/bloc/filter/bloc.dart';
+export 'package:Jot/ui/screens/create_plan.dart';
