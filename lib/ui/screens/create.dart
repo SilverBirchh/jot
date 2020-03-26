@@ -5,6 +5,7 @@ import 'package:Jot/main_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// TODO Refactor this and break it up 
 class Create extends StatefulWidget {
   Create({this.jot});
 

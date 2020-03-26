@@ -1,4 +1,5 @@
 import 'package:Jot/ui/widgets/jot_drawer.dart';
+import 'package:Jot/ui/widgets/plan_list.dart';
 import 'package:flutter/material.dart';
 
 class PlansPage extends StatelessWidget {
@@ -30,6 +31,7 @@ class PlansPage extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Color(0xff539D8B),
+        child: PlanList(),
       ),
     );
   }

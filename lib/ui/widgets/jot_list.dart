@@ -13,15 +13,12 @@ class JotList extends StatefulWidget {
 }
 
 class _JotListState extends State<JotList> {
-  final ScrollController _scrollController = ScrollController();
-  final double _scrollThreshold = 200.0;
   JotBloc jotBloc;
   bool onlyImportant;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
     onlyImportant = BlocProvider.of<FilterBloc>(context).state.inportantOnly;
     jotBloc = BlocProvider.of<JotBloc>(context);
     final String userId =
@@ -29,24 +26,6 @@ class _JotListState extends State<JotList> {
     jotBloc.add(
       StreamJots(userId),
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    if (maxScroll - currentScroll <= _scrollThreshold) {
-      final String userId =
-          BlocProvider.of<ApplicationBloc>(context).state.user.uid;
-      jotBloc.add(
-        StreamMoreJots(userId),
-      );
-    }
   }
 
   @override
@@ -151,7 +130,6 @@ class _JotListState extends State<JotList> {
               }
               return ListView.builder(
                 itemCount: allJots.length,
-                controller: _scrollController,
                 itemBuilder: (BuildContext context, int index) {
                   return JotContainer(
                     allJots[index],

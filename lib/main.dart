@@ -30,6 +30,9 @@ void main() async {
         RepositoryProvider<JotApiBase>(
           create: (BuildContext context) => JotApi(),
         ),
+                RepositoryProvider<PlanApiBase>(
+          create: (BuildContext context) => PlanApi(),
+        ),
       ],
       child: JotApp(),
     ),
@@ -56,6 +59,11 @@ class JotApp extends StatelessWidget {
         BlocProvider<JotBloc>(
           create: (BuildContext context) => JotBloc(
             RepositoryProvider.of<JotApiBase>(context),
+          ),
+        ),
+        BlocProvider<PlansBloc>(
+          create: (BuildContext context) => PlansBloc(
+            RepositoryProvider.of<PlanApiBase>(context),
           ),
         ),
         BlocProvider<FilterBloc>(

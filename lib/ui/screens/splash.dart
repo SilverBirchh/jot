@@ -22,8 +22,7 @@ class Splash extends StatelessWidget {
                   'Jot.',
                   style: TextStyle(
                       color: Color(0xffF5C5BE),
-                      fontSize: 70,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
                       decoration: null),
                 ),
               ),
