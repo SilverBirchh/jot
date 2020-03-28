@@ -5,9 +5,12 @@ import 'package:Jot/data/step/step_model.dart' as Stepp;
 import 'package:Jot/main_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:Jot/data/step/step_model.dart' as Stepp;
 
-// TODO Refactor this and break it up
 class CreatePlanPage extends StatefulWidget {
+  CreatePlanPage({this.plan});
+
+  final Plan plan;
   @override
   _CreatePlanPageState createState() => _CreatePlanPageState();
 }
@@ -17,24 +20,23 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
 
   final TextEditingController goalController = TextEditingController();
 
-  final List<TextEditingController> steps = [TextEditingController()];
+  List<TextEditingController> steps = [TextEditingController()];
+  List<Stepp.Step> builtSteps;
   List<String> planTags = [];
 
-  Plan buildPlan() {
-    List<Stepp.Step> stepsList = <Stepp.Step>[];
-    steps.asMap().forEach((int index, TextEditingController value) {
-      stepsList.add(
-        Stepp.Step(completed: false, order: index, text: value.text),
-      );
-    });
-
-    return Plan(
-      goal: goalController.text,
-      tags: planTags,
-      steps: stepsList,
-      startDate: Timestamp.now(),
-      ownerId: BlocProvider.of<ApplicationBloc>(context).state.user.uid,
-    );
+  @override
+  void initState() {
+    super.initState();
+    if (widget.plan != null) {
+      goalController.text = widget.plan.goal;
+      planTags = widget.plan.tags.map((e) => e.toString()).toList();
+      steps = widget.plan.steps.map((Stepp.Step step) {
+        return TextEditingController(text: step.text);
+      }).toList();
+      builtSteps = widget.plan.steps.map((Stepp.Step step) {
+        return step;
+      }).toList();
+    }
   }
 
   @override
@@ -43,8 +45,8 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
       key: _createPlanKey,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
-        title: const Text(
-          'Create Plan',
+        title: Text(
+          widget.plan != null ? 'Amend Plan' : 'Create Plan',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -85,7 +87,12 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                 return;
               }
               Plan plan = this.buildPlan();
-              BlocProvider.of<PlansBloc>(context).add(AddPlan(plan));
+              if (widget.plan != null) {
+                BlocProvider.of<PlansBloc>(context)
+                    .add(UpdatePlan(plan, widget.plan.uid));
+              } else {
+                BlocProvider.of<PlansBloc>(context).add(AddPlan(plan));
+              }
               Navigator.pop(context);
             },
           ),
@@ -197,6 +204,10 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                                     if (value.isEmpty) {
                                       setState(() {
                                         steps.removeAt(index);
+                                        if (builtSteps != null &&
+                                            builtSteps[index] != null) {
+                                          builtSteps.removeAt(index);
+                                        }
                                       });
                                     }
                                   },
@@ -224,6 +235,10 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                                 onPressed: () {
                                   setState(() {
                                     steps.removeAt(index);
+                                    if (builtSteps != null &&
+                                        builtSteps[index] != null) {
+                                      builtSteps.removeAt(index);
+                                    }
                                   });
                                 },
                               )
@@ -242,6 +257,9 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                 onTap: () {
                   setState(() {
                     steps.add(TextEditingController());
+                    if (builtSteps != null) {
+                      builtSteps.add(Stepp.Step());
+                    }
                   });
                 },
                 child: Row(
@@ -262,6 +280,26 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Plan buildPlan() {
+    List<Stepp.Step> stepsList = <Stepp.Step>[];
+    steps.asMap().forEach((int index, TextEditingController value) {
+      final bool completed = builtSteps != null && builtSteps[index] != null
+          ? builtSteps[index].completed
+          : false;
+      stepsList.add(
+        Stepp.Step(completed: completed, order: index, text: value.text),
+      );
+    });
+
+    return Plan(
+      goal: goalController.text,
+      tags: planTags,
+      steps: stepsList,
+      startDate: widget.plan != null ? widget.plan.startDate : Timestamp.now(),
+      ownerId: BlocProvider.of<ApplicationBloc>(context).state.user.uid,
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:Jot/data/plan/plan_model.dart';
+
 import './main_exports.dart';
 
 void main() async {
@@ -110,8 +112,9 @@ class JotApp extends StatelessWidget {
               builder: (_) => MetricsPage(),
             );
           } else if (settings.name == '/create-plan') {
+            final Plan plan = settings.arguments;
             return SlideUpRoute(
-              page: CreatePlanPage(),
+              page: CreatePlanPage(plan: plan),
             );
           }
           // unknown route

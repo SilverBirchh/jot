@@ -20,3 +20,17 @@ class PlanListUpdated extends PlansEvent {
   PlanListUpdated(this.plans);
   final List<Plan> plans;
 }
+
+class DeletePlan extends PlansEvent {
+  DeletePlan(this.planId);
+
+  final String planId;
+}
+
+class UpdatePlan extends PlansEvent {
+  UpdatePlan(this.plan, this.uid);
+
+  final Plan plan;
+  final String uid;
+}
+

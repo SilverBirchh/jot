@@ -25,6 +25,10 @@ class PlansBloc extends Bloc<PlansEvent, PlansState> {
       yield* _mapLoadAllPlansToState(event);
     } else if (event is PlanListUpdated) {
       yield* _mapPlansUpdateToState(event);
+    } else if (event is DeletePlan) {
+      yield* _mapDeletePlanToState(event);
+    } else if (event is UpdatePlan) {
+      yield* _updatePlanToState(event);
     }
   }
 
@@ -49,5 +53,13 @@ class PlansBloc extends Bloc<PlansEvent, PlansState> {
 
   Stream<PlansState> _addPlanToState(AddPlan event) async* {
     plansApi.addPlan(event.plan);
+  }
+
+  Stream<PlansState> _mapDeletePlanToState(DeletePlan event) async* {
+    plansApi.deletePlan(event.planId);
+  }
+
+    Stream<PlansState> _updatePlanToState(UpdatePlan event) async* {
+    plansApi.updatePlan(event.plan, event.uid);
   }
 }
